@@ -2,8 +2,9 @@ import asyncio
 import logging
 
 import text_generation
-import s3_client as s3
 import os
+
+from torch import Tensor
 from dotenv import load_dotenv
 import sys
 from fastapi import FastAPI
@@ -16,45 +17,14 @@ from contextlib import asynccontextmanager
 app = FastAPI()
 logging.info('new ver')
 class Request(BaseModel):
-    source_key: str
-    target_key: str
-    user_id: str
+    # source_key: str
+    # target_key: str
+    # user_id: str
     # session_id: str
+    prompt: str
 
 class Response(BaseModel):
-    result: any
-
-# async def connect_db():
-#     # Establish a connection to the PostgreSQL database
-#     conn = await asyncpg.connect(
-#         user=os.environ.get('DATABASE_USER'),
-#         password=os.environ.get('DATABASE_PASSWORD'),
-#         database=os.environ.get('DATABASE_NAME'),
-#         host=os.environ.get('DATABASE_HOST'),
-#         port=os.environ.get('DATABASE_PORT')
-#     )
-#     return conn
-
-async def disconnect_db(conn):
-    # Close the connection to the PostgreSQL database
-    await conn.close()
-
-
-    
-
-async def create_session(user_id: str, conn: any):
-    # Example query to fetch data from the database
-    # Insert a record into the database
-    uuid_value = str(uuid.uuid4())
-    await conn.execute("INSERT INTO session (id, user_id, status) VALUES ($1, $2, $3)", uuid_value, user_id, 'fail')
-    return uuid_value
-
-async def update_session(status: str, session_id: str, conn: any):
-    # Example query to fetch data from the database
-    # Insert a record into the database
-    await conn.execute("UPDATE session set status = $1 where id = $2", status, session_id)
-
-
+    result: list[str]
 
 @app.get("/")
 async def root():
@@ -73,6 +43,10 @@ async def face_swap(request: Request):
     # logging.info("presigned_url: %s", presigned_url)
     # await update_session('success', session_id, conn)
     # await disconnect_db(conn)
+    print(request.prompt)
+    # result = [request.prompt]
+
+
     result = text_generation.generate_text(request.prompt)
     print(result)
     return Response(result=result)

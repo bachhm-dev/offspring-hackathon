@@ -23,8 +23,9 @@ RUN pip install fastapi
 RUN pip install "uvicorn[standard]"
 
 RUN pip install torchvision
-RUN pip install --upgrade transformers==4.39.2
+# RUN pip install --upgrade transformers==4.39.2
 RUN pip install --upgrade requests
+RUN pip install -q -U git+https://github.com/huggingface/transformers.git
 RUN pip install -q -U git+https://github.com/huggingface/peft.git
 RUN pip install -q -U git+https://github.com/huggingface/accelerate.git
 RUN pip install -q -U datasets scipy ipywidgets matplotlib

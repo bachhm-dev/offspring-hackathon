@@ -42,10 +42,18 @@ def generate_text(prompt):
   truncation=True
   )
 
+  # Convert generated text to a string array
+  generated_text_array = [seq['generated_text'] for seq in sequences]
+  print(generated_text_array)
+
   for seq in sequences:
     print(f"{seq['generated_text']}")
 
-  return sequences
+  # Convert generated text to a string array
+  generated_text_array = [seq['generated_text'] for seq in sequences]
+  print(generated_text_array)
+
+  return generated_text_array
 
   
 
